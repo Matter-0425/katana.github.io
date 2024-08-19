@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拔刀開悟卷軸-天賦</title>
+    <link rel="icon" href="icom.png" type="icom.png" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden; /* 防止水平滚动条 */
+        }
+    
+            /* Loader container */
+            #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 1);
+            z-index: 1000;
+            pointer-events: none; /* Prevent interaction */
+        }
+
+        /* Mask layer */
+        #mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent mask */
+            z-index: 999;
+            pointer-events: auto; /* Enable interaction */
+        }
+
+        /* Spinner animation */
+        #loader img {
+            width: 100px;
+            height: 100px;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Spin keyframes */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Hide content initially */
+        #main-content {
+            display: none;
+        }
+
+        /* Show content when loaded */
+        body.loaded #loader, 
+        body.loaded #mask {
+            display: none;
+        }
+
+        body.loaded #main-content {
+            display: block;
+        }
+
+        nav {
+            background-color: rgba(0, 0, 0, 0.7); /* 导航栏背景色，带有透明度 */
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            position: sticky;
+            top: 0;
+            z-index: 1000; /* 确保导航栏在背景图片上方 */
+        }
+    
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+    
+        nav ul li {
+            margin: 0 15px;
+        }
+    
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+    
+        .section {
+            height: 100vh; /* 每个部分占据整个视口高度 */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            color: white;
+            text-align: center;
+        }
+    
+        .overlay {
+            position: relative;
+            background: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+            padding: 20px;
+            border-radius: 10px; /* Optional: Rounded corners */
+            max-width: 70%; /* Limit the maximum width */
+            color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Optional: Add shadow effect */
+            max-height: 80vh; /* Limit the maximum height (80% of viewport height) */
+            overflow: auto; /* Make overlay scrollable if content exceeds max height */
+        }
+    
+        .section1 {
+            position: relative; /* 使子元素绝对定位相对于这个元素 */
+            background-image: url('規劃中地區.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+            text-align: center;
+            height: 100vh; /* 确保部分高度占据整个视口 */
+            display: flex;
+            align-items: center; /* 垂直居中 */
+            justify-content: center; /* 水平居中 */
+        }
+
+        .section2 {
+            position: relative; /* 使子元素绝对定位相对于这个元素 */
+            background-image: url('儲藏室.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+            text-align: center;
+            height: 100vh; /* 确保部分高度占据整个视口 */
+            display: flex;
+            align-items: center; /* 垂直居中 */
+            justify-content: center; /* 水平居中 */
+        }
+        
+        .section3{
+            position: relative; /* 使子元素绝对定位相对于这个元素 */
+            background-image: url('庭院.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+            text-align: center;
+            height: 100vh; /* 确保部分高度占据整个视口 */
+            display: flex;
+            align-items: center; /* 垂直居中 */
+            justify-content: center; /* 水平居中 */
+        }
+
+        .section4 {
+            position: relative; /* 使子元素绝对定位相对于这个元素 */
+            background-image: url('庭院2.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+            text-align: center;
+            height: 100vh; /* 确保部分高度占据整个视口 */
+            display: flex;
+            align-items: center; /* 垂直居中 */
+            justify-content: center; /* 水平居中 */
+        }
+
+
+    
+        h1 {
+            font-family: "DFKai-SB", "標楷體", serif;
+            font-weight: bold;
+            font-size: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            margin-bottom: 10px; /* 减少与下面元素的距离 */
+        }
+    
+        h2 {
+            font-family: "DFKai-SB", "標楷體", serif;
+            font-weight: bold;
+            font-size: 35px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            margin-bottom: 10px; /* 减少与下面元素的距离 */
+        }
+
+        h4 {
+            font-size: 20px;
+            margin-top: 0; /* 移除上方的默认间距 */
+            margin-bottom: 20px; /* 可以根据需要调整 */
+        }
+    
+        h6 {
+            font-style: italic;
+            color: #333333; /* 比黑色淡的灰色 */
+            font-size: 15px; /* 調整字體大小 */
+        }
+
+        .overlay img {
+            width: 100%; /* Make the image fill the overlay */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 10px; /* Rounded corners for the image */
+            opacity: 0.9; /* Slightly transparent image */
+        }
+
+        h3 a {
+            color: white; /* 链接的颜色为白色 */
+            text-decoration: none; /* 去掉下划线 */
+        }
+
+        h3 a:hover {
+            text-decoration: underline; /* 悬停时添加下划线 */
+        }
+    </style>
+    
+    <script>
+        // Ensure the loader is displayed for at least 1 second
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+                alert("本作品《托蘭先人給新人拔刀手的開悟卷軸》由 [伊藤鴻朱末] 創作，版權所有© [2024]。未經作者書面許可，禁止任何形式的複製、分發、展示或傳播本作品的任何部分。");
+            }, 250);
+        });
+    </script>
+
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="mask"></div>
+    <div id="loader">
+        <img src="icom.png" alt="Loading">
+        <h3>Loading...</h3>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <nav>
+            <ul>
+                <li><a href="首頁.html">首頁</a></li>
+                <li><a href="天賦.html">天賦</a></li>
+                <li><a href="拔刀基本動作.html">拔刀基本動作</a></li>
+                <li><a href="心法.html">心法</a></li>
+                <li><a href="對自我的需求.html">對自我的需求</a></li>
+                <li><a href="心理素質的培養.html">心理素質的培養</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="section section1">
+        <div class="overlay">
+            <h1>如果你玩過其他職業那你一定知道…</h1>
+            <p style="text-align: left;">拔刀在目前的托蘭定位屬實強大大大大大大…(回音)，這可能是你來此地的原因？</p>
+            <p style="text-align: left;">拔刀不僅僅是定位強大而以， 更多的人是因為對日本文化的嚮往而學習拔刀（這裡的意思是一個字：帥）。</p>
+            <p style="text-align: left;">目前拔刀比其其他武器更優秀的點如下：</p>
+            <ul style="text-align: left;">
+                <li>幾乎能夠在不移動的情況下達到最高的輸出效率。</li>
+                <li>對於累積傷害（疊傷）的需求相對較高。</li>
+                <li>擁有不錯的魔力（ＭＰ）回復機制。</li>
+                <li>對於其他同隊的物理職業有著較強的壓制能力。</li>
+                <li>當達到連續攻擊的極限時，能夠達到非常高的輸出上限。</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section section2">
+        <div class="overlay">
+            <h1>你的天賦（如何善點強化點數）</h1>
+            <p style="text-align: left;">在托蘭拔刀界裡，我們有三種主流強化點數的點法，三種分別為主點：</p>
+                <ul style="text-align: left;">
+                    <li>力量（ＳＴＲ）</li>
+                    <li>靈巧（ＤＥＸ）</li>
+                    <li>敏捷（ＡＧＩ）</li>
+                </ul>
+            <p style="text-align: left;">俗稱「力拔（力量拔刀）」、「靈拔（靈巧拔刀）」、「敏拔（敏捷拔刀）」</p>
+            <p style="text-align: left;">那麼要選哪一種呢？</p>
+            <p style="text-align: left;">如果你下定決心要成為專精拔刀手，那麼恭喜你，你無需做出決定！你勢必三種都要有，這是主流點法，成為專精拔刀手，在合適時候切換到合適的拔刀角色，有時是能夠輾壓只有一種拔刀的普通人，
+            <h1 style="text-align: left; color: rgb(201, 29, 29);;">這樣懂嗎，M3？</h1>
+        </div>
+    </div>
+    <div class="section section3">
+        <div class="overlay">
+            <p style="text-align: left;">如果你還沒下定決心或是以來看看這個白癡在說啥的心態，你就拿個轉盤隨便三選一即可(別針的這樣)，選「靈」！
+            <p style="text-align: left;">為甚麼是靈？（腦袋不好的可以跳過，腦袋好了這裡隨時歡迎你）
+            <h3 style="text-align: left;">只有拔刀時：基礎攻擊速度+200，最低命中率30%，主點：</h3>
+            <ul style="text-align: left;">
+                <li>力量（STR）：基礎攻擊力+1.5，基礎攻擊速度+0.3，穩定率+0.075</li>
+                <li>靈巧（DEX）：基礎攻擊力+2.5，基礎魔法攻擊力+1，穩定率+0.025</li>
+                <li>敏捷（AGI）：基礎攻擊速度+2.5</li>
+            </ul>
+            <h3 style="text-align: left;">現在我們來看看托蘭命中的計算公式：</h3>
+            <ul style="text-align: left;">
+                <li>基礎命中 = 角色等級 + 總DEX</li>
+                <li>總命中 = 基礎命中 * (1 + 命中%) + 固定值命中</li>
+            </ul>
+            <h3 style="text-align: left;">接下來再來看看托蘭暴擊傷害的計算公式：</h3>
+            <ul style="text-align: left;">
+                <li>當力量大於敏捷時，能力值暴擊傷害 = 總力量 / 5</li>
+                <li>當力量小於敏捷時，能力值暴擊傷害 = (總力量 + 總敏捷) / 10</li>
+                <li>重擊傷害倍率 = (150 + 能力值暴擊傷害) * (100 + 重擊傷害+N%) % + 重擊傷害+N</li>
+                <li>在「好戰份子」中，增加暴擊率的點數加滿後，相當於暴擊傷害+5%</li>
+            </ul>
+            <p style="text-align: left;">※ 計算過程中遇到小數時，會立刻捨去再繼續計算。</p>
+            <h3 style="text-align: left; color: rgb(201, 29, 29);">看出來一些關鍵了嗎？</h3>
+            <h3 style="text-align: left; color: rgb(201, 29, 29);">對於迷茫的你，我暫時建議：選擇「靈拔」可以讓我們獲得比「力拔」和「敏拔」更高的命中率。同時，從長期暴擊傷害的角度來看，「靈拔」能幫助我們獲得更多的傷害。</h3>
+            <p style="text-align: left;">※ 可以看下面的圖</p>
+        </div>
+    </div>
+    <div class="section section4">
+        <div class="overlay">
+            <img src="命中.png" alt="（命中和暴擊總關係圖。）">
+            <h1>命中和暴擊總關係圖</h1> 
+            <p>※ 一般來說目前大多數人選擇主力、靈拔時，副點點到247或250。</p>
+            <h3><a href="拔刀基本動作.html">～～接下來請前往「拔刀基本動作」～～</a></h3>
+        </div>
+    </body>
+</html>
