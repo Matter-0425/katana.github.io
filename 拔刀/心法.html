@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拔刀開悟卷軸-對自我的要求</title>
+    <link rel="icon" href="icom.png" type="image/png" />
+    <style>
+        /* 通用样式 */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+            overflow-x: hidden; /* 防止水平滚动条 */
+        }
+
+        /* 加载屏幕 */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 1);
+            z-index: 1000;
+            pointer-events: none; /* 防止用户交互 */
+        }
+
+        /* 遮罩层 */
+        #mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色遮罩 */
+            z-index: 999;
+            pointer-events: auto; /* 允许用户交互 */
+        }
+
+        /* 加载动画 */
+        #loader img {
+            width: 100px;
+            height: 100px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 初始隐藏主内容 */
+        #main-content {
+            display: none;
+        }
+
+        /* 当页面加载完毕时显示内容 */
+        body.loaded #loader, 
+        body.loaded #mask {
+            display: none;
+        }
+
+        body.loaded #main-content {
+            display: block;
+        }
+
+        /* 导航栏样式 */
+        nav {
+            background-color: rgba(0, 0, 0, 0.7); /* 导航栏背景色，带有透明度 */
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            position: sticky;
+            top: 0;
+            z-index: 1000; /* 确保导航栏在背景图片上方 */
+        }
+    
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+    
+        nav ul li {
+            margin: 0 15px;
+        }
+    
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* 通用部分样式 */
+        .section {
+            background-image: url('很黑.jpg');
+            height: 100vh; /* 每个部分占据整个视口高度 */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+            color: rgb(0, 0, 0);
+            text-align: center;
+        }
+
+        .overlay {
+            position: relative;
+            background: rgba(170, 170, 170, 0.7); /* 半透明黑色背景 */
+            padding: 20px;
+            border-radius: 10px;
+            width: 60vw; /* 寬度設定為螢幕寬度的 50% */
+            color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* 添加陰影效果 */
+            max-height: 80vh; /* 限制最大高度（80%視口高度） */
+            overflow-y: scroll; /* 垂直滾動 */
+            overflow-x: hidden; /* 隱藏水平滾動條 */
+            scrollbar-width: none; /* 隱藏滾動條（Firefox） */
+            -ms-overflow-style: none; /* 隱藏滾動條（IE和Edge） */
+        }
+
+        .overlay::-webkit-scrollbar {
+            display: none; /* 隱藏滾動條（Webkit） */
+        }
+
+        /* 文本样式 */
+        h1 {            
+            font-family: "DFKai-SB", "標楷體", serif;
+            font-weight: bold;
+            font-size: 70px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-family: "DFKai-SB", "標楷體", serif;
+            font-weight: bold;
+            font-size: 35px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            margin-bottom: 10px;
+        }
+    
+        h4 {
+            font-size: 20px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+    
+        h6 {
+            font-style: italic;
+            color: #333333;
+            font-size: 15px;
+        }
+
+        h3 a {
+            color: white; /* 链接的颜色为白色 */
+            text-decoration: none; /* 去掉下划线 */
+        }
+
+        h3 a:hover {
+            text-decoration: underline;
+        }
+
+        p {
+            text-align: left;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: #000;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
+    
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+                alert("本作品《托蘭先人給新人拔刀手的開悟卷軸》由 [伊藤鴻朱末] 創作，版權所有© [2024]。未經作者書面許可，禁止任何形式的複製、分發、展示或傳播本作品的任何部分。");
+            }, 1000);
+        });
+    </script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="mask"></div>
+    <div id="loader">
+        <img src="icom.png" alt="Loading">
+        <h3>Loading...</h3>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="首頁.html">首頁</a></li>
+                    <li><a href="天賦.html">天賦</a></li>
+                    <li><a href="拔刀基本動作.html">拔刀基本動作</a></li>
+                    <li><a href="心法.html">心法</a></li>
+                    <li><a href="對自我的需求.html">對自我的需求</a></li>
+                    <li><a href="心理素質的培養.html">心理素質的培養</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Section 3 -->
+            <div class="section section3">
+                    <div class="overlay">
+                        <!-- YouTube video embed -->
+                        <h1>心　法</h1>
+                        <p style="text-align: center;">歡迎來到「心法」，在這裡我會教你如何善用技能，以及拔刀的一些隱藏技能。</p>
+                        <p style="text-align: center;">全部演示如下（影片）</p>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/BZKxuUohQiQ?si=D7BNhxHX9UukhUF6"
+                            title="YouTube video player"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+            <!-- Section 4 -->
+            <div class="section section3">
+                    <div class="overlay">
+                        <!-- YouTube video embed -->
+                            <h2>普功縮地滑步回魔式</h2>
+                            <p>首先，拔刀最最最基本的就是，普通功擊（簡稱:普功）。</p>
+                            <p>拔刀分為普功動畫分為三種，一種是十字（直+橫）的，另外兩種則是直和橫。</p>
+                            <p>再來，拔刀最最最基本的就是滑步。</p>
+                            <p>在普功時，將方向鍵移至任意的方向。操作完成後，會出現滑步，並且滑步的方向會依方向鍵的方位移動（有些人很討厭滑步，我個人是覺得習慣就好，滑步如果滑的好，不僅僅可以拿來躲招，還可以讓畫面好看）。
+                               如果你能掌握這兩種最最最基本功，接下來的進階對你來說相當簡單。</p>
+                            <p>「普功縮地滑步回魔式」，使用此招需要觸發「縮地法」（一般來說觸發條件是與敵方目標大於2m，除非有特殊的裝備增加了普功距離），步驟相當簡單，首先觸發「縮地法」，觸發直到碰觸敵人普功，這時普功動畫「必定」「十字」，結束後需要滑步拉開與敵方距離。
+                               當你將這些步驟完成後，你就完成了一次「普功縮地滑步回魔式」，這招在你普功後所能恢復的魔力(mp)量能比起原地普功還來的高，如果將這招重複使用能夠回復相當不錯的mp量。</p>
+                            <p>在連續使用「普功縮地滑步回魔法」時，如果多動點腦可以在更短的時間內回復mp，不知道你有想到？答案相當簡單，我給一個提示：與滑步非常相關。</p>
+                            <p style="text-align: center;">（答案在「普功縮地滑步回魔式」區的最下面）</p>
+                            <br>
+                            <h3>普功1：十字</h3>
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/4ZQPeX0hZDU?si=Jxi1PXZkAY3l6kYl" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen></iframe>
+                            </div>
+                            <br>
+                            <h3>普功2：直</h3>
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/J5lvXSuM-7k?si=i0q-5XpqEQatr5bo" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen></iframe>
+                            </div>
+                            <br>
+                            <br>
+                            <h3>普功3：橫</h3>
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/CLY57eV_lYU?si=5d9h6QAZIwQ-Q1jr" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen></iframe>
+                            </div>
+                            <br>
+                            <br>
+                            <h3>「普功縮地滑步回魔法」</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Section 5 -->
+            <div class="section section3">
+                <div class="overlay">
+                    <!-- Add content here -->
+                </div>
+            </div>
+            <!-- Section 6 -->
+            <div class="section section3">
+                <div class="overlay">
+                    <!-- Add content here -->
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
