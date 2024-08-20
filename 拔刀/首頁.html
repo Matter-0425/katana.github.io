@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拔刀開悟卷軸-首頁</title>
+    <link rel="icon" href="icom.png" type="icom.png" />
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+            overflow-x: hidden; /* 防止水平滚动条 */
+        }
+
+        /* Loader container */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 1);
+            z-index: 1000;
+            pointer-events: none; /* Prevent interaction */
+        }
+
+        /* Mask layer */
+        #mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent mask */
+            z-index: 999;
+            pointer-events: auto; /* Enable interaction */
+        }
+
+        /* Spinner animation */
+        #loader img {
+            width: 100px;
+            height: 100px;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Spin keyframes */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Hide content initially */
+        #main-content {
+            display: none;
+        }
+
+        /* Show content when loaded */
+        body.loaded #loader, 
+        body.loaded #mask {
+            display: none;
+        }
+
+        body.loaded #main-content {
+            display: block;
+        }
+
+        nav {
+            background-color: rgba(0, 0, 0, 0.7); /* 导航栏背景色，带有透明度 */
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            position: sticky;
+            top: 0;
+            z-index: 1000; /* 确保导航栏在背景图片上方 */
+        }
+    
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+    
+        nav ul li {
+            margin: 0 15px;
+        }
+    
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+    
+        .section {
+            height: 100vh; /* 每个部分占据整个视口高度 */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            color: white;
+            text-align: center;
+        }
+    
+        .section1 {
+            background-image: url('公酒自拍.png');
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            text-align: center; /* 中心对齐文本 */
+            height: 100vh; /* 确保部分高度占据整个视口 */
+        }
+
+        .text-container {
+            max-width: 80%; /* 限制容器最大宽度以防文本过宽 */
+        }
+            
+        .section2 {
+            position: relative; /* 使子元素绝对定位相对于这个元素 */
+            background-image: url('沙爾陶海灣.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+            text-align: center;
+            height: 100vh; /* 确保部分高度占据整个视口 */
+            display: flex;
+            align-items: center; /* 垂直居中 */
+            justify-content: center; /* 水平居中 */
+        }
+
+        .overlay {
+            position: relative;
+            background: rgba(0, 0, 0, 0.7); /* 半透明黑色背景 */
+            padding: 20px;
+            border-radius: 10px;
+            width: 60vw; /* 寬度設定為螢幕寬度的 50% */
+            color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* 添加陰影效果 */
+            max-height: 80vh; /* 限制最大高度（80%視口高度） */
+            overflow-y: scroll; /* 垂直滾動 */
+            overflow-x: hidden; /* 隱藏水平滾動條 */
+            scrollbar-width: none; /* 隱藏滾動條（Firefox） */
+            -ms-overflow-style: none; /* 隱藏滾動條（IE和Edge） */
+        }
+
+        .overlay::-webkit-scrollbar {
+            display: none; /* 隱藏滾動條（Webkit） */
+        }
+    
+        .section3 {
+            position: relative; /* 使子元素绝对定位相对于这个元素 */
+            background-image: url('索菲亞街道.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+            text-align: center;
+            height: 100vh; /* 确保部分高度占据整个视口 */
+            display: flex;
+            align-items: center; /* 垂直居中 */
+            justify-content: center; /* 水平居中 */
+        }
+    
+        h1 {            
+            font-family: "DFKai-SB", "標楷體", serif;
+            font-weight: bold;
+            font-size: 50px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            margin-bottom: 10px; /* 减少与下面元素的距离 */
+        }
+
+        h2 {
+            font-family: "DFKai-SB", "標楷體", serif;
+            font-weight: bold;
+            font-size: 35px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            margin-bottom: 10px; /* 减少与下面元素的距离 */
+        }
+    
+        h4 {
+            font-size: 20px;
+            margin-top: 0; /* 移除上方的默认间距 */
+            margin-bottom: 20px; /* 可以根据需要调整 */
+        }
+    
+        h6 {
+            font-style: italic;
+            color: #333333; /* 比黑色淡的灰色 */
+            font-size: 15px; /* 調整字體大小 */
+        }
+
+        h3 a {
+            color: white; /* 链接的颜色为白色 */
+            text-decoration: none; /* 去掉下划线 */
+        }
+
+        h3 a:hover {
+            text-decoration: underline; /* 悬停时添加下划线 */
+        }
+
+    </style>
+    
+    <script>
+        window.addEventListener('load', () => {
+            // 确保页面所有内容，包括图片，完全加载后再隐藏加载画面
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+                alert("本作品《托蘭先人給新人拔刀手的開悟卷軸》由 [伊藤鴻朱末] 創作，版權所有© [2024]。未經作者書面許可，禁止任何形式的複製、分發、展示或傳播本作品的任何部分。");
+            }, 1000); // 可根据需要调整时间，确保加载画面足够时间显示
+        });
+    </script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="mask">    </div>
+    <div id="loader">
+        <img src="icom.png" alt="Loading">
+        <h3>Loading...</h3>
+
+    </div>
+    <!-- Main Content -->
+    <div id="main-content">
+        <nav>
+            <ul>
+                <li><a href="首頁.html">首頁</a></li>
+                <li><a href="天賦.html">天賦</a></li>
+                <li><a href="拔刀基本動作.html">拔刀基本動作</a></li>
+                <li><a href="心法.html">心法</a></li>
+                <li><a href="對自我的需求.html">對自我的需求</a></li>
+                <li><a href="心理素質的培養.html">心理素質的培養</a></li>
+            </ul>
+        </nav>
+
+        <!-- Section 1 -->
+        <div class="section section1">
+            <div class="text-container">
+                <h1>托蘭先人給新人拔刀手的開悟卷軸</h1>
+                <h4>（由 伊藤鴻朱末 記下）</h4>
+                <h6>（全文請勿完全照抄，要變強就別只會照抄，抄得再好不將其融會貫通，也終究是個書呆子。）</h6>
+            </div>
+        </div>
+        
+        <!-- Section 2 -->
+        <div class="section section2">
+            <div class="overlay">
+                <h2>先人師傅的話</h2>
+                <p style="text-align: left;">2024/08/07的這天我決定寫下這份數萬字的拔刀開悟卷軸，給未來的新手拔刀手，如今我已培養超過十位的新手拔刀手，</p>
+                <p style="text-align: left;">哼！或許你覺得這數字少的可憐，不過儘管我培養的徒弟數量不多，我依然對自己的教學成果充滿驕傲(伊藤の傲嬌)。</p>
+                <p style="text-align: left;">這份卷軸雖然不能與我本人以直接執導方式的開悟領悟度高，但如果你有心多加磨練，一定能夠87％掌握拔刀。</p>
+                <p style="text-align: left;">這份卷軸包含了關於天賦（善點強化點數）、拔刀基本動作（需要技能）、心法（善用技能）、對自我本身的需求（對於裝備挑選）、心理素質的培養，甚至可能會提及武士精神與修行的哲理部分（純屬瞎掰）。對於新手來說，重要的是在學習的過程中保持開放的心態，並不斷思考與反思，以達到真正的開悟與成長。</p>
+                <p style="text-align: left;">學習結束後，若要變強，就不要僅僅模仿或死記硬背，而是要將這些教導內化，並通過實踐來驗證和強化自己的理解。這正是成為一名真正的拔刀手所需的關鍵。</p>
+            </div>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="section section3">
+            <div class="overlay">
+                <h2>給新人拔刀手（可以跳過不看）</h2>
+                <p style="text-align: left;">在成為我的徒弟之前我通常會問幾個關鍵問題，你雖然不是，但你可以測試你潛在的決心與心態。</p>
+                <p style="text-align: left;">「你為什麼要學拔刀？」這個問題是最重要的問題。這個問題的目的是讓新手們思考自己的動機，了解他們是否有真正的決心和熱情來投入這項修行。</p>
+                <p style="text-align: left;">接下來會問「你願意為了這個目標付出多少？」這個問題旨在評估他的承諾與毅力。拔刀術不僅僅是技術的學習，更是一種心靈的鍛煉，需要長期的努力與耐心。</p>
+                <p style="text-align: left;">最後一個問題是「你如何看待失敗與挫折？」這問題可以揭示他在面對困難時的態度。真正的修行者應該能夠從挫折中學習，並在困境中保持信念。</p>
+                <p style="text-align: left;">這些問題共同構成了確保他們不僅僅是出於一時興起或表面的興趣，而是擁有真正的決心和準備，來面對這條充滿挑戰的修行之路。（我就說可以跳過吧）</p>
+                <p style="text-align: left;">如果你下定決心那和我來吧！（我就說可以跳過吧，你還真的把它看完www）</p>
+                <p style="text-align: left;">那麼現在輪到你們了，「你為什麼要學拔刀？」、「你願意為了這個目標付出多少？」、「你如何看待失敗與挫折？」</p>
+                <h3><a href="天賦.html">～～接下來請前往「天賦」～～</a></h3>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
