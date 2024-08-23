@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拔刀開悟卷軸-心理素質的培養</title>
+    <link rel="icon" href="icom.png" type="icom.png" />
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+            overflow-x: hidden; /* 防止水平滚动条 */
+        }
+
+        /* Loader container */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 1);
+            z-index: 1000;
+            pointer-events: none; /* Prevent interaction */
+        }
+
+        /* Mask layer */
+        #mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent mask */
+            z-index: 999;
+            pointer-events: auto; /* Enable interaction */
+        }
+
+        /* Spinner animation */
+        #loader img {
+            width: 100px;
+            height: 100px;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Spin keyframes */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Hide content initially */
+        #main-content {
+            display: none;
+        }
+
+        /* Show content when loaded */
+        body.loaded #loader, 
+        body.loaded #mask {
+            display: none;
+        }
+
+        body.loaded #main-content {
+            display: block;
+        }
+
+        nav {
+            background-color: rgba(0, 0, 0, 0.7); /* 导航栏背景色，带有透明度 */
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            position: fixed; /* 固定在视口内 */
+            top: 0;
+            left: 0;
+            width: 100%; /* 确保导航栏宽度覆盖整个视口宽度 */
+            z-index: 1000; /* 确保导航栏在其他内容之上 */
+        }
+    
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+    
+        nav ul li {
+            margin: 0 15px;
+        }
+    
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+    
+        .section {
+            height: 100vh; /* 每个部分占据整个视口高度 */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            color: white;
+            text-align: center;
+        }
+    
+        .section1 {
+            background-image: url('公酒自拍.png');
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            text-align: center; /* 中心对齐文本 */
+            height: 100vh; /* 确保部分高度占据整个视口 */
+        }
+
+        .text-container {
+            max-width: 80%; /* 限制容器最大宽度以防文本过宽 */
+        }
+            
+        .section2 {
+            position: relative; /* 使子元素绝对定位相对于这个元素 */
+            background-image: url('沙爾陶海灣.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+            text-align: center;
+            height: 100vh; /* 确保部分高度占据整个视口 */
+            display: flex;
+            align-items: center; /* 垂直居中 */
+            justify-content: center; /* 水平居中 */
+        }
+
+        .overlay {
+            position: relative;
+            background: rgba(0, 0, 0, 0.7); /* 半透明黑色背景 */
+            padding: 20px;
+            border-radius: 10px;
+            width: 60vw; /* 寬度設定為螢幕寬度的 50% */
+            color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* 添加陰影效果 */
+            max-height: 70vh; /* 限制最大高度（80%視口高度） */
+            overflow-y: scroll; /* 垂直滾動 */
+            overflow-x: hidden; /* 隱藏水平滾動條 */
+            scrollbar-width: none; /* 隱藏滾動條（Firefox） */
+            -ms-overflow-style: none; /* 隱藏滾動條（IE和Edge） */
+        }
+
+        .overlay::-webkit-scrollbar {
+            display: none; /* 隱藏滾動條（Webkit） */
+        }
+    
+        .section3 {
+            position: relative; /* 使子元素绝对定位相对于这个元素 */
+            background-image: url('索菲亞街道.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+            text-align: center;
+            height: 100vh; /* 确保部分高度占据整个视口 */
+            display: flex;
+            align-items: center; /* 垂直居中 */
+            justify-content: center; /* 水平居中 */
+        }
+    
+        h1 {            
+            font-family: "DFKai-SB", "標楷體", serif;
+            font-weight: bold;
+            font-size: 50px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            margin-bottom: 10px; /* 减少与下面元素的距离 */
+        }
+
+        h2 {
+            font-family: "DFKai-SB", "標楷體", serif;
+            font-weight: bold;
+            font-size: 35px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            margin-bottom: 10px; /* 减少与下面元素的距离 */
+        }
+    
+        h4 {
+            font-size: 20px;
+            margin-top: 0; /* 移除上方的默认间距 */
+            margin-bottom: 20px; /* 可以根据需要调整 */
+        }
+    
+        h6 {
+            font-style: italic;
+            color: #333333; /* 比黑色淡的灰色 */
+            font-size: 15px; /* 調整字體大小 */
+        }
+
+        h3 a {
+            color: white; /* 链接的颜色为白色 */
+            text-decoration: none; /* 去掉下划线 */
+        }
+
+        h3 a:hover {
+            text-decoration: underline; /* 悬停时添加下划线 */
+        }
+    </style>
+    
+    <script>
+        // Ensure the loader is displayed for at least 1 second
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+                alert("本作品《托蘭先人給新人拔刀手的開悟卷軸》由 [伊藤鴻朱末] 創作，版權所有© [2024]。未經作者書面許可，禁止任何形式的複製、分發、展示或傳播本作品的任何部分。");
+            }, 1000);
+        });
+    </script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="mask"></div>
+    <div id="loader">
+        <img src="icom.png" alt="Loading">
+        <h3>Loading...</h3>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <nav>
+            <ul>
+                <li><a href="首頁.html">首頁</a></li>
+                <li><a href="天賦.html">天賦</a></li>
+                <li><a href="拔刀基本動作.html">拔刀基本動作</a></li>
+                <li><a href="心法.html">心法</a></li>
+                <li><a href="對自我的需求.html">對自我的需求</a></li>
+                <li><a href="心理素質的培養.html">心理素質的培養</a></li>
+            </ul>
+        </nav>
+
+        <!-- Section 1 -->
+        <div class="section section1">
+            <div class="text-container">
+
+            </div>
+        </div>
+        
+        <!-- Section 2 -->
+        <div class="section section2">
+            <div class="overlay">
+
+            </div>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="section section3">
+            <div class="overlay">
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
