@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拔刀開悟卷軸-對自我的要求</title>
+    <link rel="icon" href="icom.png" type="image/png" />
+    <style>
+        /* 通用样式 */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+            overflow-x: hidden; /* 防止水平滚动条 */
+        }
+
+        /* 加载屏幕 */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 1);
+            z-index: 1000;
+            pointer-events: none; /* 防止用户交互 */
+        }
+
+        /* 遮罩层 */
+        #mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色遮罩 */
+            z-index: 999;
+            pointer-events: auto; /* 允许用户交互 */
+        }
+
+        /* 加载动画 */
+        #loader img {
+            width: 100px;
+            height: 100px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 初始隐藏主内容 */
+        #main-content {
+            display: none;
+        }
+
+        /* 当页面加载完毕时显示内容 */
+        body.loaded #loader, 
+        body.loaded #mask {
+            display: none;
+        }
+
+        body.loaded #main-content {
+            display: block;
+        }
+
+        /* 导航栏样式 */
+        nav {
+            background-color: rgba(0, 0, 0, 0.7); /* 导航栏背景色，带有透明度 */
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            position: fixed; /* 固定在视口内 */
+            top: 0;
+            left: 0;
+            width: 100%; /* 确保导航栏宽度覆盖整个视口宽度 */
+            z-index: 1000; /* 确保导航栏在其他内容之上 */
+        }
+    
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+    
+        nav ul li {
+            margin: 0 15px;
+        }
+    
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* 通用部分样式 */
+        .section {
+            background-image: url('很白.png');
+            height: 100vh; /* 每个部分占据整个视口高度 */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+            color: rgb(0, 0, 0);
+            text-align: center;
+        }
+
+        .overlay {
+            position: relative;
+            background: rgba(0, 0, 0, 0.7); /* 半透明黑色背景 */
+            padding: 20px;
+            border-radius: 10px;
+            width: 60vw; /* 寬度設定為螢幕寬度的 50% */
+            color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* 添加陰影效果 */
+            max-height: 80vh; /* 限制最大高度（80%視口高度） */
+            overflow-y: scroll; /* 垂直滾動 */
+            overflow-x: hidden; /* 隱藏水平滾動條 */
+            scrollbar-width: none; /* 隱藏滾動條（Firefox） */
+            -ms-overflow-style: none; /* 隱藏滾動條（IE和Edge） */
+        }   
+
+        /* 文本样式 */
+        h1 {            
+            font-family: "DFKai-SB", "標楷體", serif;
+            font-weight: bold;
+            font-size: 50px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-family: "DFKai-SB", "標楷體", serif;
+            font-weight: bold;
+            font-size: 35px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            margin-bottom: 10px;
+        }
+    
+        h4 {
+            font-size: 20px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+    
+        h6 {
+            font-style: italic;
+            color: #333333;
+            font-size: 15px;
+        }
+
+        h3 a {
+            color: white; /* 链接的颜色为白色 */
+            text-decoration: none; /* 去掉下划线 */
+        }
+
+        h3 a:hover {
+            text-decoration: underline;
+        }
+
+        p {
+            text-align: left;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: #000;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay img {
+            width: 100%; /* Make the image fill the overlay */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 10px; /* Rounded corners for the image */
+            opacity: 0.9; /* Slightly transparent image */
+        }
+    </style>
+    
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+                alert("本作品《托蘭先人給新人拔刀手的開悟卷軸》由 [伊藤鴻朱末] 創作，版權所有© [2024]。未經作者書面許可，禁止任何形式的複製、分發、展示或傳播本作品的任何部分。");
+            }, 1000);
+        });
+    </script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="mask"></div>
+    <div id="loader">
+        <img src="icom.png" alt="Loading">
+        <h3>Loading...</h3>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="首頁.html">首頁</a></li>
+                    <li><a href="天賦.html">天賦</a></li>
+                    <li><a href="拔刀基本動作.html">拔刀基本動作</a></li>
+                    <li><a href="心法.html">心法</a></li>
+                    <li><a href="對自我的需求.html">對自我的需求</a></li>
+                    <li><a href="心理素質的培養.html">心理素質的培養</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Section 1 -->
+            <div class="section section1">
+                <div class="overlay">
+                    <h2>武士技能</h2>
+                    <p>「天流亂星」必須點滿(主要輸出手段)</p>
+                    <p>「霞雪月花」點１或 1 0(差別是一點點的傷害量，以後更，急的人去布偶看)</p>
+                    <p>「畫龍點睛」必須點滿(和無影斬搭配可以打出大爆炸輸出)</p>
+                    <p>「無影斬」點１或 1 0(差別是此傷害命中)</p>
+                    <p> 「斬釘截鐵」至少點到１(沒這招就等死)</p>
+                    <p>「武士道」、「雙手和持」，乃被動需點滿</p>
+                    <p>「突襲制其先」點滿(超強被動：自身增益)</p>
+                    <p>「不撓不屈」點滿(超級強被動：自身增益)</p>
+                    <p style="text-align: center;">(首次玩拔你需要的最低標準(較為舒適)，簡圖如下)</p>                 
+                    <img src="技能圖片\拔技低配.webp" alt="技能圖片\拔技低配.webp">
+                    <p>如果可以強烈建議把「縮地法」、「怪力亂神」點滿，回魔手段會舒服點，「彈刀」點1就可以當連擊首。</p>
+                </div>
+            </div>            
+            <!-- Section 2 -->
+            <div class="section section2">
+                <div class="overlay">
+                    <h2>劍術技能</h2>
+                    <p>可以不點：「戰吼」點１或點 10 (通常有坦朋友就不用點)。</p>
+                </div>
+            </div>
+
+            <!-- Section 3 -->
+            <div class="section section3">
+                <div class="overlay">
+                    <h2>射射技能(?)</h2>
+                    <p>「回氣」點滿(可以噗咻噗咻的回魔)</p>
+                    <p> 可以不點：「分身射手」要點就點滿(可以噗咻噗咻的回魔)。</p>
+                </div>
+            </div>
+            <!-- Section 4 -->
+            <div class="section section4">
+                <div class="overlay">
+                    <h2>魔法技能</h2>
+                    <p>「法術/衝擊波」至少點５(點到７可以秒放，適合放連擊開頭)。</p>
+                    <p>「法術/終結」點１(斷連擊用，你不點老娘算你厲害)。</p>
+                </div>
+            </div>
+            <!-- Section 5 -->
+            <div class="section section5">
+                <div class="overlay">
+                    <h2>格鬥技能</h2>
+                    <p>可以不點：重擊(點5的話就別用這招，點10的話可以有100%機率使目標陷入膽怯)、穿甲(要點就點10，並且配合雷吉斯托環「穿甲強化」)。</p>
+                </div>
+            </div>
+            <!-- Section 6 -->
+            <div class="section section6">
+                <div class="overlay">
+                    <h2>雙劍技能</h2>
+                    <p>「步步為營」點１(做連擊首)(或５過度「劍閃」)</p>
+                    <p>「神速軌跡」(被動：自身增益)</p>
+                    <p>可以不點：「劍閃」要點就點滿(拔刀攻擊+10%武器ATK+25%閃躲次數上限+2)。</p>
+                </div>
+            </div>
+            <!-- Section 7 -->
+            <div class="section section7">
+                <div class="overlay">
+                    <h2>斧槍技能</h2>
+                    <p>不管你是哪種拔「破風之勢」點滿，如下圖。</p>
+                    <img src="技能圖片\力靈斧.webp" alt="技能圖片\力靈斧.webp">
+                    <p>如果你是力、靈拔「神速掌握」點滿(提醒：敏拔點了變垃圾喔)，如下圖。</p>
+                    <img src="技能圖片\敏斧.webp" alt="技能圖片\敏斧.webp">
+                </div>
+            </div>
+            <!-- Section 8 -->
+            <div class="section section8">
+                    <div class="overlay">
+                    <h2>防衛技能</h2>
+                    <p>可以不點：「幻象迷蹤」可以不點，但有點「分身射手」、「輔助技能」的朋友可能要再三思。</p>
+                </div>
+            </div>
+            <!-- Section 9 -->
+            <div class="section section9">
+                <div class="overlay">
+                    <h2>狩獵技能</h2>
+                    <p>真的可以不點：「絆腳陷阱」要點就點滿(要點的話強烈推薦買星石)(單挑要打那種一開始就很吉娃娃的王很有用)。</p>
+                </div>
+            </div>
+            <!-- Section 10 -->
+            <div class="section section10">
+                <div class="overlay">
+                    <h2>暗殺技能</h2>
+                    <p>「急速後閃」至少點１(閃躲很少，這個用的好可以替代)</p>
+                    <p>可以不點：
+                    <br>
+                    <p>「刺客殺著」點１物理貫穿+16%，點 10 有25%(要走貫穿流的看這裡!!)
+                    「暗影步伐」(若暗影步伐之層數≧10，閃躲期間將獲得無敵幀。使用閃躲將傷害無效化時，改為發動暗影奇襲(強化)、暗影步伐層數-10)。</p>
+                </div>
+            </div>
+            <!-- Section 11 -->
+            <div class="section section11">
+                <div class="overlay">
+                    <h2>輔助技能</h2>
+                    <p>可以不點：</p>
+                    <p>「異常抗體」要點點１即可(艾露老大的拿手絕活)</p>
+                    <p>「勇氣泉源」、「高速行動」、「魔力能源」要點多少自己看看cp值，個人推薦只要3個想要其中一個，那一個就點滿；都想要的話就是都點滿。</p>
+                </div>
+            </div>
+            <!-- Section 12 -->
+            <div class="section section12">
+                <div class="overlay">
+                    <h2>好戰分子</h2>
+                    <img src="技能圖片\好戰分子.webp" alt="技能圖片\好戰分子.webp">
+                    <p>就這樣，沒得談。</p>
+                </div>
+            </div>
+            <!-- Section 13 -->
+            <div class="section section13">
+                <div class="overlay">
+                    <h2>生存本能</h2>
+                    <p>「裝死」點滿 「喘一口氣」點滿 「ＭＰ突破」點滿 可以不點： 「沉著以對」多少在場上能回點魔 對於敏拔/坦：可以點上半部分。</p>                    
+                </div>
+            </div>
+            <!-- Section 14 -->
+            <div class="section section14">
+                <div class="overlay">
+                    <h2>暗黑技能</h2>
+                    <p>可以不點：</p>
+                    <p>55點點法</p>
+                    <img src="技能圖片\暗55.webp" alt="技能圖片\暗55.webp">
+                    <br>
+                    <p>32點點法</p>
+                    <img src="技能圖片\暗32.webp" alt="技能圖片\暗32.webp">
+                    <br>
+                    <p>25點點法</p>
+                    <img src="技能圖片\暗25.webp" alt="技能圖片\暗25.webp">
+                    <br>
+                    <p>鐮刀有無敵，好用！但也不一定要點，「不悔殺意」打公會王有用(然後就沒用了)，至於「永恆惡夢」點多少的差別去看布偶qwq。</p>
+                </div>
+            </div>
+            <!-- Section 15 -->
+            <div class="section section15">
+                <div class="overlay">
+                    <h2>吟遊詩人</h2>
+                    <p>「即興演出」點１即可(連擊首)。</p>
+                </div>
+            </div>
+            <!-- Section 16 -->
+            <div class="section section16">
+                    <div class="overlay">
+                    <h2>忍者技能</h2>
+                    <p>要裝卷軸的話，除了下方 必點 的格式。根據卷軸．雷遁、火遁，也可以加點「忍術鍛鍊i和ii」用來增加 雷遁紫電一閃的必定暴擊傷害、火遁爆炎陳的傷害(有些王要燒，單挑用得到)。</p>
+                    <img src="技能圖片\忍忍.webp">
+                </div>
+            </div>
+            <!-- Section 17 -->
+            <div class="section section17">
+                <div class="overlay">
+                    <h2>游擊隊技能</h2>
+                    <p>敏拔適合「前線維持i和ii」。</p>
+                </div>
+            </div>
+            <!-- Section 18 -->
+            <div class="section section17">
+                <div class="overlay">
+                    <h2>！！！謂！！！</h2>
+                    <h3><a href="心法.html">～～接下來請前往「心法」～～</a></h3>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
